@@ -1,7 +1,7 @@
 # Template file for 'perl-CryptX'
 pkgname=perl-CryptX
-version=0.081
-revision=1
+version=0.087
+revision=2
 build_style=perl-module
 hostmakedepends="perl"
 makedepends="perl"
@@ -13,4 +13,4 @@ license="Artistic-1.0-Perl, GPL-1.0-or-later, Unlicense"
 homepage="https://metacpan.org/release/CryptX"
 changelog="https://raw.githubusercontent.com/DCIT/perl-CryptX/master/Changes"
 distfiles="${CPAN_SITE}/Crypt/${pkgname#perl-}-${version}.tar.gz"
-checksum=14e10284eac49713312cd7ba8d7748ad8e672aa61787f82dd9b6728962d1a9dc
+checksum=8070ec295160d48f376d8ff1b2cbf0bf152da9f2033939382f00f13f748cd37d

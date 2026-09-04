@@ -1,26 +1,26 @@
 # Template file for 'libime'
 pkgname=libime
-version=1.1.8
+version=1.1.15
 revision=1
 build_style=cmake
 build_helper=qemu
 hostmakedepends="pkg-config gettext extra-cmake-modules python3"
-makedepends="libfcitx5-devel boost-devel libzstd-devel"
+makedepends="libfcitx5-devel boost-devel-minimal libboost_iostreams libzstd-devel"
 short_desc="Library to support generic input method implementation"
 maintainer="Đoàn Trần Công Danh <congdanhqx@gmail.com>"
 license="LGPL-2.1-or-later"
 homepage="https://fcitx-im.org/wiki/Fcitx"
-_lm_sc=lm_sc.arpa-20230712.tar.xz
-_dict=dict-20240416.tar.zst
-_table=table-20240108.tar.gz
+_lm_sc=lm_sc.arpa-20260606.tar.zst
+_dict=dict-20260430.tar.zst
+_table=table-20240108.tar.zst
 distfiles="https://download.fcitx-im.org/fcitx5/libime/libime-${version}.tar.zst
  https://download.fcitx-im.org/data/${_lm_sc}
  https://download.fcitx-im.org/data/${_dict}
  https://download.fcitx-im.org/data/$_table"
-checksum="1ab9e16c26adbd57144a701dad708794defb7ffdb85774799e28404897350377
- badd62c16c6373787a0fda8f09cd452d12f60d5868856f651ceecf1a07baba32
- 9c262cbfa306cb4c3b055991b7e22b453e0f267f20ceb5d9d9e5f8fbe4f2d367
- 729c596d86907de727c74d0fc3fd241c406c5debd2b4cb74eefe022387ee9dae"
+checksum="e225da70ba9554a4b11af44fc3063f09290059da2c20c81124f7a9ba02c9916e
+ 8c7da1b03770060269b92c0e6172552a2a9041cb74ef0be0b2659e10f0a703f1
+ 3edc008d90fcd61b9967b9e590f396189d7a00fa74c45ecde0d9850a0fdd6241
+ 3e9d87b04a393f131723472c8eaa860dd23c378a3d4f6a9005513b2a95b3614b"
 skip_extraction="
  ${_lm_sc}
  ${_dict}
@@ -56,7 +56,8 @@ libime-utils_package() {
 
 libime-devel_package() {
 	short_desc+=" - development files"
-	depends="boost-devel libime-utils>=${version}_${revision}
+	depends="boost-devel-minimal libboost_iostreams
+	 libime-utils>=${version}_${revision}
 	 libfcitx5-devel libime>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/include

@@ -29,13 +29,14 @@ do_build() {
 	# We use zig-out to avoid path conflicts as it is the default install
 	# prefix used by the zig build system.
 	DESTDIR="zig-out" zig build \
-		-j"${XBPS_MAKEJOBS}" \
+		${makejobs} \
 		--sysroot "${XBPS_CROSS_BASE}" \
 		--search-prefix "${XBPS_CROSS_BASE}/usr" \
 		--prefix /usr \
 		--global-cache-dir /host/zig \
 		--libc xbps_zig_libc.txt \
 		--release=safe \
+		--verbose \
 		-Dtarget="${zig_target}" -Dcpu="${zig_cpu}" \
 		install \
 		${configure_args}

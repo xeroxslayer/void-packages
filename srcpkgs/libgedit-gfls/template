@@ -1,6 +1,6 @@
 # Template file for 'libgedit-gfls'
 pkgname=libgedit-gfls
-version=0.2.0
+version=0.4.0
 revision=1
 build_style=meson
 build_helper=gir
@@ -11,8 +11,9 @@ short_desc="Module dedicated to file loading and saving"
 maintainer="chrysos349 <chrysostom349@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://gitlab.gnome.org/World/gedit/libgedit-gfls"
-distfiles="${GNOME_SITE}/libgedit-gfls/${version%.*}/libgedit-gfls-${version}.tar.xz"
-checksum=c88bc2bbf1ec1155b61766f372ac44a7f272792234b86e8ad5ea4f7365171acb
+changelog="https://gitlab.gnome.org/World/gedit/libgedit-gfls/-/raw/main/NEWS"
+distfiles="https://gitlab.gnome.org/World/gedit/libgedit-gfls/-/archive/${version}/libgedit-gfls-${version}.tar.gz"
+checksum=091952cb178430427b18ea62a4e4de5bde6335c00b7ab7eda58f31602ca33883
 
 build_options="gir gtk_doc"
 build_options_default="gir"
@@ -20,6 +21,13 @@ build_options_default="gir"
 if [ -z "$CROSS_BUILD" ]; then
 	build_options_default+=" gtk_doc"
 fi
+
+post_patch() {
+	if [ "$XBPS_TARGET_LIBC" = "musl" ]; then
+		# Disable unsupported encoding tests on musl
+		vsed -e '/test-iconv/d' -e '/test-encoding-convert/d' -i tests/unit-tests/meson.build
+	fi
+}
 
 libgedit-gfls-devel_package() {
 	depends="libglib-devel ${sourcepkg}>=${version}_${revision}"

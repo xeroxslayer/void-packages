@@ -1,20 +1,25 @@
 # Template file for 'libkf6screen'
+# group=kde-plasma
 pkgname=libkf6screen
-version=6.1.5
+version=6.7.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF
  -DKDE_INSTALL_QTPLUGINDIR=lib/qt6/plugins"
 hostmakedepends="pkg-config extra-cmake-modules qt6-tools qt6-base
- qt6-wayland-tools wayland-devel"
-makedepends="qt6-wayland-devel libXrandr-devel qt6-base-private-devel
+ wayland-devel"
+makedepends="qt6-base-devel libXrandr-devel qt6-base-private-devel
  kf6-kconfig-devel wayland-devel plasma-wayland-protocols"
 short_desc="KDE screen management software"
 maintainer="John <me@johnnynator.dev>"
 license="LGPL-2.1-or-later"
 homepage="https://invent.kde.org/plasma/libkscreen"
 distfiles="${KDE_SITE}/plasma/${version}/libkscreen-${version}.tar.xz"
-checksum=58f523a9dfe07a5cb9758d60f6a7f1c9f40120289f835515a4e2d8d6d6da4c65
+checksum=f40bfbd83147a7c7ff387ffe5053cc2ea000bdb21555a0b3d06da3c59d7b4977
+
+# stage builds
+makedepends+=" kde-plasma-base"
+shlib_requires="KDE_Plasma.${version}"
 
 libkf6screen-devel_package() {
 	short_desc+=" - development"

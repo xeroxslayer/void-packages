@@ -1,30 +1,28 @@
 # Template file for 'neomutt'
 pkgname=neomutt
-version=20240425
+version=20260616
 revision=1
-create_wrksrc=true
-build_wrksrc="${pkgname}-${version}"
 build_style=configure
 configure_args="--ssl --gpgme --notmuch --gdbm --lua --sasl --zlib --tdb
- --rocksdb --autocrypt --sqlite"
-make_check_target=test
+ --rocksdb --autocrypt --sqlite --pcre2 --zstd"
 conf_files="/etc/neomuttrc"
 # neomutt needs either w3m/lynx/elinks to build manual.html
 hostmakedepends="docbook-xsl gettext libxslt perl tcl w3m pkg-config"
 makedepends="aspell-devel gdbm-devel gettext-devel gpgme-devel
  rocksdb-devel tdb-devel ncurses-devel libidn2-devel libnotmuch-devel
- openssl-devel libsasl-devel lua54-devel zlib-devel sqlite-devel"
+ openssl-devel libsasl-devel lua54-devel zlib-devel sqlite-devel libzstd-devel
+ pcre2-devel"
 depends="mime-types"
 short_desc="Mutt with misc fixes and feature patches"
 maintainer="Toyam Cox <Vaelatern@voidlinux.org>"
 license="GPL-2.0-or-later"
 homepage="https://neomutt.org/"
 _test_files_hash=00efc8388110208e77e6ed9d8294dfc333753d54
-distfiles="https://github.com/neomutt/neomutt/archive/${version}.tar.gz
+distfiles="https://github.com/neomutt/neomutt/archive/refs/tags/${version}.tar.gz
  https://github.com/neomutt/neomutt-test-files/archive/${_test_files_hash}.tar.gz"
-checksum="a5aed0a0f506260997821c23cb148bc5ca4938fd613e0e8b89556f397ffc17f7
+checksum="2c34fdd2166d5765e6bfdc21d1248bc4e92ddc0a33537b9418c17cd90e2dda80
  2865e258034a72e498fdd1810071d9ab7559297a5f67203ea163cfdc4192dea4"
-python_version=3
+skip_extraction="${_test_files_hash}.tar.gz"
 
 # fix:
 if [ "${XBPS_CROSS_BASE}" ]; then
@@ -37,20 +35,20 @@ post_install() {
 	# move dist to examples dir
 	vsconf contrib/oauth2/mutt_oauth2.py Muttrc.mutt_oauth2.dist
 	vsconf contrib/vim-keys/vim-keys.rc Muttrc.vim-keys.dist
-	vsconf contrib/smime_keys Muttrc.smime_keys.dist
 }
 
-pre_check() {
+do_check() {
+	local _ec=0
+	mkdir -p test-files
+	vsrcextract -C test-files ${_test_files_hash}.tar.gz
 	(
-	 cd ${wrksrc}/neomutt-test-files-${_test_files_hash}/
+	 cd test-files
 	 ./setup.sh
 	)
-	export NEOMUTT_TEST_DIR=${wrksrc}/neomutt-test-files-${_test_files_hash}
-}
-
-post_check() {
-	# This is a file chmodded to 311 and can't be removed normally
-	chmod 777 ${wrksrc}/neomutt-test-files-${_test_files_hash}/maildir/damson
+	export NEOMUTT_TEST_DIR=${wrksrc}/test-files
+	make ${makejobs} test || _ec=1
+	chmod -R u+rwX test-files/maildir/damson
+	return $_ec
 }
 
 # REMARKS:

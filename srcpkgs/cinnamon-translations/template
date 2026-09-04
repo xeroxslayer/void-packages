@@ -1,6 +1,6 @@
 # Template file for 'cinnamon-translations'
 pkgname=cinnamon-translations
-version=5.8.2
+version=6.6.2
 revision=1
 build_style=gnu-makefile
 hostmakedepends="gettext"
@@ -9,7 +9,7 @@ maintainer="Orphaned <orphan@voidlinux.org>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/linuxmint/cinnamon-translations/"
 distfiles="https://github.com/linuxmint/cinnamon-translations/archive/${version}/cinnamon-translations-${version}.tar.gz"
-checksum=3c4454696bd5d57d96dbbde10232c72b575d6e6e5364c657836967aa783ab0c8
+checksum=88ff13650c301e015fee8678f4e0d8e83e648ca86768519ab91697c0d5f0e679
 
 do_install() {
 	vmkdir usr

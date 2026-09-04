@@ -1,2 +1,5 @@
-# 2.8 is the current LTS
-ignore="2\.[!8].*"
+# we want to use only LTS releases
+# only match updates to the minor branch we already use
+_minor="${version%.*}"
+_minor="${_minor//./\\.}\\."
+pattern="${_minor}[0-9]*"

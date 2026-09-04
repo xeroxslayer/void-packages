@@ -1,7 +1,7 @@
 # Template file for 'python3-kiwisolver'
 pkgname=python3-kiwisolver
-version=1.4.5
-revision=2
+version=1.5.0
+revision=1
 build_style=python3-pep517
 hostmakedepends="python3-setuptools_scm python3-wheel python3-cppy"
 makedepends="python3-devel python3-cppy"
@@ -13,7 +13,7 @@ license="BSD-3-Clause"
 homepage="https://github.com/nucleic/kiwi"
 changelog="https://github.com/nucleic/kiwi/raw/main/releasenotes.rst"
 distfiles="${PYPI_SITE}/k/kiwisolver/kiwisolver-${version}.tar.gz"
-checksum=e57e563a57fb22a142da34f38acc2fc1a5c864bc29ca1517a88abc963e60d6ec
+checksum=d4193f3d9dc3f6f79aaed0e5637f45d98850ebf01f7ca20e69457f3e8946b66a
 
 post_install() {
 	vlicense LICENSE

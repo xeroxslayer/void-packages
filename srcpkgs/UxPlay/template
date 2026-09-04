@@ -1,6 +1,6 @@
 # Template file for 'UxPlay'
 pkgname=UxPlay
-version=1.69
+version=1.73.6
 revision=1
 build_style=cmake
 configure_args="-DNO_MARCH_NATIVE=ON"
@@ -13,7 +13,7 @@ license="GPL-3.0-or-later"
 homepage="https://github.com/FDH2/UxPlay"
 changelog="https://github.com/FDH2/UxPlay/releases"
 distfiles="https://github.com/FDH2/UxPlay/archive/refs/tags/v${version}.tar.gz"
-checksum=ba282a8c36a20321da07557fd986cf494bb556ff45a20a16e0a6226cc28dc1d5
+checksum=3a1a754bc7ed4b0f72b6237aa4d769238b9c20a71b651bc3fe9ac679e2a67f18
 
 post_install() {
 	vdoc ${FILESDIR}/README.voidlinux

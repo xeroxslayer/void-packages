@@ -100,7 +100,7 @@ pkgname=foo
 version=1.0
 revision=1
 build_style=gnu-configure
-short_desc="A short description max 72 chars"
+short_desc="Package description, no more than 72 characters"
 maintainer="name <email>"
 license="GPL-3.0-or-later"
 homepage="http://www.foo.org"
@@ -207,7 +207,7 @@ a package providing the executable named `<name>` and the module named
 language prefix can be dropped. Short names for languages are no valid substitute
 for the language prefix.
 
-Example: python-pam, perl-URI, python3-pyside2
+Example: perl-URI, python3-pyside2
 
 <a id="language_bindings"></a>
 #### Language Bindings
@@ -220,7 +220,7 @@ The naming convention to those packages is:
 <name>-<language>
 ```
 
-Example: gimp-python, irssi-perl
+Example: gimp-python3, irssi-perl
 
 <a id="programs"></a>
 #### Programs
@@ -367,7 +367,7 @@ The following variables are defined by `xbps-src` and can be used on any templat
 
 - `makejobs` Set to `-jX` if `XBPS_MAKEJOBS` is defined, to allow parallel jobs with `GNU make`.
 
-- `sourcepkg`  Set to the to main package name, can be used to match the main package
+- `sourcepkg`  Set to the main package name, can be used to match the main package
 rather than additional binary package names.
 
 - `CHROOT_READY`  Set if the target chroot (masterdir) is ready for chroot builds.
@@ -597,9 +597,9 @@ build methods. By default set to `check`.
 
 - `make_install_target` The installation target. When `${build_style}` is set to `configure`,
 `gnu-configure` or `gnu-makefile`, this is the target passed to `${make_command}` in the install
-phase; when unset, it defaults to `install`. If `${build_style}` is `python-pep517`, this is the
+phase; when unset, it defaults to `install`. If `${build_style}` is `python3-pep517`, this is the
 path of the Python wheel produced by the build phase that will be installed; when unset, the
-`python-pep517` build style will look for a wheel matching the package name and version in the
+`python3-pep517` build style will look for a wheel matching the package name and version in the
 current directory with respect to the install.
 
 - `make_check_pre` The expression in front of `${make_cmd}`. This can be used for wrapper commands
@@ -690,6 +690,9 @@ redistribution.
 - `subpackages` A white space separated list of subpackages (matching `foo_package()`)
 to override the guessed list. Only use this if a specific order of subpackages is required,
 otherwise the default would work in most cases.
+
+- `metapackage` If set to `yes`, the package must be an empty meta-package, i.e. a package that
+only depends on other packages.
 
 - `broken` If set, building the package won't be allowed because its state is currently broken.
 This should be set to a string describing why it is broken, or a link to a buildlog demonstrating the failure.
@@ -881,7 +884,7 @@ package shouldn't be added as a build time dependency.
 The global repository takes the name of
 the current branch, except if the name of the branch is master. Then the resulting
 repository will be at the global scope. The usage scenario is that the user can
-update multiple packages in a second branch without polluting his local repository.
+update multiple packages in a second branch without polluting their local repository.
 
 <a id="pkg_defined_repo"></a>
 #### Package defined Repositories
@@ -1011,11 +1014,6 @@ information can be found in the `go.mod` file for modern Go projects.
 It's expected that the distfile contains the package, but dependencies
 will be downloaded with `go get`.
 
-- `meta` For `meta-packages`, i.e packages that only install local files or simply
-depend on additional packages. This build style does not install
-dependencies to the root directory, and only checks if a binary package is
-available in repositories.
-
 - `R-cran` For packages that are available on The Comprehensive R Archive
 Network (CRAN). The build style requires the `pkgname` to start with
 `R-cran-` and any dashes (`-`) in the CRAN-given version to be replaced
@@ -1047,8 +1045,6 @@ Additional install arguments can be specified via `make_install_args`.
 
 - `waf3` For packages that use the Python3 `waf` build method with python3.
 
-- `waf` For packages that use the Python `waf` method with python2.
-
 - `slashpackage` For packages that use the /package hierarchy and package/compile to build,
 such as `daemontools` or any `djb` software.
 
@@ -1077,8 +1073,6 @@ system. Additional arguments may be passed to the `zig build` invocation using
 For packages that use the Python module build method (`setup.py` or
 [PEP 517](https://www.python.org/dev/peps/pep-0517/)), you can choose one of the following:
 
-- `python2-module` to build Python 2.x modules
-
 - `python3-module` to build Python 3.x modules
 
 - `python3-pep517` to build Python 3.x modules that provide a PEP 517 build description without
@@ -1091,6 +1085,8 @@ matching the `build_style` name, Example:
 
 - `texmf` For texmf zip/tarballs that need to go into /usr/share/texmf-dist. Includes
 duplicates handling.
+
+- `tree-sitter` for tree-sitter language grammars.
 
 <a id="build_helper"></a>
 ### build helper scripts
@@ -1113,7 +1109,10 @@ additional paths to be searched when linking target binaries to be introspected.
 - `meson` creates a cross file, `${XBPS_WRAPPERDIR}/meson/xbps_meson.cross`, which configures
 meson for cross builds. This is particularly useful for building packages that wrap meson
 invocations (e.g., `python3-pep517` packages that use a meson backend) and is added by default
-for packages that use the `meson` build style.
+for packages that use the `meson` build style. It also sets `$MESON_PACKAGE_CACHE_DIR` to
+`$XBPS_SRCDISTDIR/$pkgname-$version/` so libraries specified as meson wraps can be added to
+distfiles and will be automatically used by meson. See also `common/scripts/gen-wrap-distfiles.py`
+for a script that generates distfiles entries for wraps.
 
 - `numpy` configures the environment for cross-compilation of python packages that provide
 compiled extensions linking to NumPy C libraries. If the `meson` build helper is also
@@ -1139,9 +1138,18 @@ This aims to fix cross-builds for when the build-style is mixed: e.g. when in a
 
 - `qmake6` is like `qmake` but for Qt6.
 
+> NOTE: the qmake build helpers internally use the `qmake_default_version` variable
+to select the default qmake implementation (Qt5 or Qt6). This variable is part of
+the helper workflow and is not commonly set in templates.
+
 - `rust` specifies environment variables required for cross-compiling crates via cargo and
-for compiling cargo -sys crates. This helper is added by default for packages that use the
-`cargo` build style.
+for compiling cargo -sys crates.
+It also adds a `cargo` wrapper that detects and passes builds through `cargo-auditable`.
+This helper is added by default for packages that use the `cargo` build style.
+
+- `haskell` specifies environment variables for cabal.
+This helper is added by default for packages that use the `haskell-stack` or
+`cabal` build style.
 
 <a id="functions"></a>
 ### Functions
@@ -1599,7 +1607,7 @@ be your guidance to decide whether or not to split off a `-doc` subpackage.
 <a id="pkgs_python"></a>
 #### Python packages
 
-Python packages should be built with the `python{,2,3}-module` build style, if possible.
+Python packages should be built with the `python3-module` build style, if possible.
 This sets some environment variables required to allow cross compilation. Support to allow
 building a python module for multiple versions from a single template is also possible.
 The `python3-pep517` build style provides means to build python packages that provide a build-system
@@ -1624,7 +1632,7 @@ The following variables may influence how the python packages are built and conf
 at post-install time:
 
 - `pycompile_module`: By default, files and directories installed into
-`usr/lib/pythonX.X/site-packages`, excluding `*-info` and `*.so`, are byte-compiled
+`usr/lib/pythonX.Y/site-packages`, excluding `*-info` and `*.so`, are byte-compiled
 at install time as python modules.  This variable expects subset of them that
 should be byte-compiled, if default is wrong.  Multiple python modules may be specified separated
 by blanks, Example: `pycompile_module="foo blah"`. If a python module installs a file into
@@ -1642,6 +1650,13 @@ applications (e.g., the application is written in C while the command is
 written in Python) or just single Python file ones that live in `/usr/bin`.
 If `python_version` is set to `ignore`, python-containing shebangs will not be rewritten.
 Use this only if a package should not be using a system version of python.
+
+- `python_extras`: Python module extras to consider when verifying Python module dependencies.
+Can be used to ensure additional dependency sets are checked. Example: `python_extras="all"`.
+
+- `nopyprovides`: if set, don't create `provides` entries for Python modules in the package.
+
+- `noverifypydeps`: if set, don't verify Python module dependencies.
 
 Also, a set of useful variables are defined to use in the templates:
 
@@ -1696,20 +1711,44 @@ The path to the package's source inside `$GOPATH` is available as
 <a id="pkgs_haskell"></a>
 #### Haskell packages
 
-We build Haskell package using `stack` from
-[Stackage](http://www.stackage.org/), generally the LTS versions.
-Haskell templates need to have host dependencies on `ghc` and `stack`,
-and set build style to `haskell-stack`.
+Haskell packages can be built either with the `cabal` or `haskell-stack`
+build style, use whichever is more convenient or better supported by upstream,
+sometimes only one of the two is possible. For packages that have haskell
+parts but use a different build style like `gnu-makefile`, make sure to use
+the `haskell` build helper.
 
-The following variables influence how Haskell packages are built:
+The following variables influence how packages are built with cabal:
+
+- `cabal_index_state`: The state of the hackage cabal index to use for
+  fetching dependencies. The source package of a haskell project should
+  come with a freeze file that sets the index state, some also set it in
+  their cabal project file. If it does not, then this has to be set to an ISO
+  timestamp in the package template. For example `2025-07-05T14:01:16Z`.
+- `configure_args`: Arguments passed to `cabal configure`. The configure step
+  generates the `cabal.project.local` file.
+- `make_build_args`: Arguments passed to `cabal build`.
+- `make_build_target`: Target passed to `cabal build`.
+- `make_check_args`: Arguments passed to `cabal test`.
+- `make_check_target`: Test target passed to cabal instead of "test".
+- `make_install_target`: Target passed to `cabal install`.
+
+And these variables influence how packages are built with stack:
 
 - `stackage`: The Stackage version used to build the package, e.g.
   `lts-3.5`. Alternatively:
   - You can prepare a `stack.yaml` configuration for the project and put it
     into `files/stack.yaml`.
-  - If a `stack.yaml` file is present in the source files, it will be used
+  - If a `stack.yaml` file is present in the source files, it will be used.
 - `make_build_args`: This is passed as-is to `stack build ...`, so
   you can add your `--flag ...` parameters there.
+
+To patch dependencies of haskell packages they have to be fetched explicitly
+from hackage by adding them to `distfiles` instead of letting cabal or stack
+download them. Once extracted and patched, the path to the patched version
+can be added to `packages` in `cabal.project` or `stack.yaml`.
+Stack will find them automatically if no `stack.yaml` file exists by scanning
+the directory. The build tool will then use the patched version of the
+depencency instead of downloading it from hackage.
 
 <a id="pkgs_font"></a>
 #### Font packages
@@ -1725,14 +1764,13 @@ installs its fonts
 <a id="pkg_rename"></a>
 ### Renaming a package
 
-- Create empty package of old name, depending on new package. This is
+- Create an empty subpackage of old name, depending on new package. This is
 necessary to provide updates to systems where old package is already
-installed. This should be a subpackage of new one, except when version
-number of new package decreased: then create a separate template using
-old version and increased revision.
+installed. This should be a subpackage of new one. When the version
+number of the transitional package decreases, add `reverts` entries to it.
+- append `" (transitional dummy package)"` to the package's `short_desc`.
 - Edit references to package in other templates and common/shlibs.
-- Don't set `replaces=`, it can result in removing both packages from
-systems by xbps.
+- Set `replaces="old-name>=0` on the new package.
 
 <a id="pkg_remove"></a>
 ### Removing a package

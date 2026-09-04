@@ -1,6 +1,6 @@
 # Template file for 'incus'
 pkgname=incus
-version=6.5.0
+version=6.22.0
 revision=1
 build_style=go
 build_helper=qemu
@@ -11,13 +11,14 @@ make_check_args="-skip TestConvertNetworkConfig"
 hostmakedepends="pkg-config"
 makedepends="lxc-devel acl-devel cowsql-devel raft-devel
  libcap-devel libuv-devel sqlite-devel eudev-libudev-devel"
-depends="lxc acl acl-progs rsync squashfs-tools xz dnsmasq iptables attr-progs"
+depends="lxc acl acl-progs rsync squashfs-tools xz dnsmasq nftables
+ attr-progs ${pkgname}-client-${version}_${revision}"
 short_desc="Powerful system container and virtual machine manager"
 maintainer="dkwo <npiazza@disroot.org>"
 license="Apache-2.0"
 homepage="https://linuxcontainers.org/incus"
 distfiles="https://github.com/lxc/incus/archive/refs/tags/v${version}.tar.gz"
-checksum=aabc762bdcfe210b777e6b78e40150c9ffbc798aa39c8b4ba55812dac3ada0ec
+checksum=5e8a8526e0f2f9b4062a9e40c09e335986ea24981b706487988ca06a7b323a52
 system_groups="_incus-admin _incus"
 make_dirs="
  /var/lib/incus 0755 root root
@@ -29,7 +30,6 @@ export GOFLAGS="-buildmode=pie"
 post_build() {
 	CGO_ENABLED=0 go install -p "${XBPS_MAKEJOBS}" -v -tags netgo -buildmode=default "${go_import_path}/cmd/incus-migrate"
 	CGO_ENABLED=0 go install -p "${XBPS_MAKEJOBS}" -v -tags agent,netgo -buildmode=default "${go_import_path}/cmd/incus-agent"
-	cd cmd/lxd-to-incus && go install -v ./
 }
 
 post_install() {
@@ -38,6 +38,7 @@ post_install() {
 		vinstall "${f}" 700 usr/libexec/incus && rm "${f}"
 	done
 	vsv incus
+	vsv incus-user
 
 	# avoid conflict with lxd, lxd-lts
 	mv ${DESTDIR}/usr/bin/{fuidshift,fuidshift-incus}
@@ -51,16 +52,12 @@ post_install() {
 	for _shell in bash fish zsh; do
 		vtargetrun ${_incus} completion ${_shell} > scripts/${_shell}-completion
 	done
-
-	vdoc "${FILESDIR}/README.voidlinux"
 }
 
 incus-client_package() {
 	short_desc+=" - client"
-	depends="${sourcepkg}>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/bin/incus
-		vsv incus-user
 		for shell in bash fish zsh; do
 			vcompletion scripts/${shell}-completion ${shell} incus
 		done
@@ -71,7 +68,8 @@ incus-tools_package() {
 	short_desc+=" - tools"
 	pkg_install() {
 		for _tool in fuidshift-incus lxc-to-incus lxd-to-incus \
-		incus-benchmark incus-migrate incus-simplestreams; do
+		incus-benchmark incus-migrate incus-simplestreams \
+		generate-config generate-database; do
 			vmove usr/bin/${_tool}
 		done
 	}

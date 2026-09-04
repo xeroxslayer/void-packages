@@ -1,12 +1,12 @@
 # Template file for 'rust-bootstrap'
 pkgname=rust-bootstrap
-version=1.81.0
+version=1.98.0
 revision=1
 short_desc="Rust programming language bootstrap toolchain"
 maintainer="Orphaned <orphan@voidlinux.org>"
-license="MIT, Apache-2.0"
+license="Apache-2.0 OR MIT"
 homepage="https://www.rust-lang.org/"
-conflicts="rust>=0"
+conflicts="rust>=0 rust-std>=0"
 lib32disabled=yes
 nostrip=yes
 repository=bootstrap
@@ -18,37 +18,53 @@ fi
 _bootstrap_url="https://static.rust-lang.org/dist"
 
 case "$XBPS_TARGET_MACHINE" in
-	x86_64*|i686) ;;
+	x86_64*|i686|aarch64*) ;;
 	# See srcpkgs/rust-bootstrap/files/generating-distfiles.md for details
 	*) _bootstrap_url="https://repo-default.voidlinux.org/distfiles";;
 esac
 
 # hardcode platform triplets
-# because this info isn't avaialble here without hacky workarounds
+# because this info isn't available here without hacky workarounds
 case "$XBPS_TARGET_MACHINE" in
 	i686)
 		distfiles="
 		 ${_bootstrap_url}/rustc-${version}-i686-unknown-linux-gnu.tar.xz
 		 ${_bootstrap_url}/rust-std-${version}-i686-unknown-linux-gnu.tar.xz"
 		checksum="
-		 8039f645445f99c0e293397b53a6696481b7d58166198605aca0eaa998f4f11f
-		 4ed9085460e444de9dee246080126f5e73062802b99aaff620d2aa827f60d972"
+		 5244bd76687b64cd7305ef038d8f349774eee494174899474535c23dcbeaa009
+		 11c7a5cfa324e4324611793692a863490902bdff8b9ccd197404711cb8dc24d4"
 		;;
 	x86_64)
 		distfiles="
 		 ${_bootstrap_url}/rustc-${version}-x86_64-unknown-linux-gnu.tar.xz
 		 ${_bootstrap_url}/rust-std-${version}-x86_64-unknown-linux-gnu.tar.xz"
 		checksum="
-		 988a4e4cdecebe4f4a0c52ec4ade5a5bfc58d6958969f5b1e8aac033bda2613e
-		 6ddf80f254e8eea9956308ba89fd68e1ac7885853df9239b07bbc9f047b7562f"
+		 0e37cb339f447fc44d6d781073bacacebfdc5612f2600e4c7e84c266f5f3aced
+		 f5022e6c95a5ad23cca2513dc8281200f585fa188de6370aa37b128a43f876a3"
 		;;
 	x86_64-musl)
 		distfiles="
 		 ${_bootstrap_url}/rustc-${version}-x86_64-unknown-linux-musl.tar.xz
 		 ${_bootstrap_url}/rust-std-${version}-x86_64-unknown-linux-musl.tar.xz"
 		checksum="
-		 02c29b1e17105bb286c36d4f9b28ca21feacb4a98848db103af796411cff1ec5
-		 3f2e47fff9320888993139fbd98f4bb44faf9355b25904f36a24a9808ff80240"
+		 4783d0963e5566b03e5e5be6bcb900672c177389d148d138fe1d75bc52554c91
+		 1a76f782db2d540e1cd16ea47829b323f4a8f4dda64bca4b23be189109c510f8"
+		;;
+	aarch64)
+		distfiles="
+		 ${_bootstrap_url}/rustc-${version}-aarch64-unknown-linux-gnu.tar.xz
+		 ${_bootstrap_url}/rust-std-${version}-aarch64-unknown-linux-gnu.tar.xz"
+		checksum="
+		 00590657f2356d7163ca5ef295283523974c340fa21bb94b420ce794f29b358c
+		 a36f7ac98af20ef0ba6368aace0345efabbebaef7962eba99f47190fd256162d"
+		;;
+	aarch64-musl)
+		distfiles="
+		 ${_bootstrap_url}/rustc-${version}-aarch64-unknown-linux-musl.tar.xz
+		 ${_bootstrap_url}/rust-std-${version}-aarch64-unknown-linux-musl.tar.xz"
+		checksum="
+		 97ecfb023dd7dd5ce1cfa0d2d3c32b725f48bc1301c1be5b1dde80f6d8c5d00c
+		 36f82e96e86ec8a02d0a0a66574f4b7be086771cec41bb8e9d40ba5cbd64c93a"
 		;;
 	# placeholders for user-supplied distfiles
 	ppc64le)
@@ -98,5 +114,9 @@ do_install() {
 	vlicense rustc-${version}-${RUST_TARGET}/LICENSE-MIT
 
 	rm -rf ${DESTDIR}/usr/share/doc/rust
-	rm -f ${DESTDIR}/usr/lib/rustlib/${RUST_TARGET}/bin/rust-ll*
+
+	# move from a non-compliant path
+	vmkdir usr/share/rust
+	mv "${DESTDIR}/usr/etc/target-spec-json-schema.json" \
+		"${DESTDIR}/usr/share/rust/target-spec-json-schema.json"
 }
