@@ -1,2 +1,1 @@
-site="https://acpica.org/downloads"
-pkgname="acpica-unix"
+distfiles="https://github.com/acpica/acpica/releases"

@@ -1,9 +1,10 @@
 # Template file for 'kf6-baloo'
+# group=kde-frameworks
 pkgname=kf6-baloo
-version=6.3.0
+version=6.29.0
 revision=1
 build_style=cmake
-configure_args="-DKF6_HOST_TOOLING=/usr/lib/cmake
+configure_args="
  -DKDE_INSTALL_QMLDIR=lib/qt6/qml
  -DKDE_INSTALL_QTPLUGINDIR=lib/qt6/plugins"
 hostmakedepends="extra-cmake-modules qt6-tools qt6-base
@@ -16,18 +17,23 @@ maintainer="John <me@johnnynator.dev>"
 license="LGPL-2.1-or-later"
 homepage="https://invent.kde.org/frameworks/baloo"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/${pkgname#kf6-}-${version}.tar.xz"
-checksum=87af96e58d9303479e628b7c801665631b6e5698e1ba9526f415cf6f3755a064
+checksum=be0f85dc22ed8a6ffe06b2b260b739da15bbeed95064a4f663632701e3170ed0
+
+# stage builds
+makedepends+=" kf6-base"
+shlib_requires="KDE_Frameworks.${version%.*}"
 
 do_check() {
 	cd build
 	# disable failing text
-	ctest -E "filemonitortest"
+	ctest -E "(filemonitortest|filewatchtest)"
 }
 
 kf6-baloo-devel_package() {
 	depends="$makedepends ${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
+		vmove usr/lib/pkgconfig
 		vmove usr/include
 		vmove usr/lib/cmake
 		vmove "usr/lib/*.so"

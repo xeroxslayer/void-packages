@@ -1,6 +1,6 @@
 # Template file for 'python3-jellyfish'
 pkgname=python3-jellyfish
-version=1.0.4
+version=1.2.1
 revision=1
 build_style=python3-pep517
 build_helper="rust"
@@ -14,7 +14,7 @@ license="BSD-2-Clause"
 homepage="https://jamesturk.github.io/jellyfish/"
 changelog="https://raw.githubusercontent.com/jamesturk/jellyfish/main/docs/changelog.md"
 distfiles="${PYPI_SITE}/j/jellyfish/jellyfish-${version}.tar.gz"
-checksum=72aabb3bedd513cdd20712242fd51173b59972c0b146b7a0b9c6f32f1656293f
+checksum=72d2fda61b23babe862018729be73c8b0dc12e3e6601f36f6e65d905e249f4db
 
 if [ "$CROSS_BUILD" ]; then
 	makedepends+=" rust-std"

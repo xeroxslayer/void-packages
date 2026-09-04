@@ -1,22 +1,22 @@
 # Template file for 'git-cliff'
 pkgname=git-cliff
-version=2.4.0
-revision=2
-archs="x86_64* i686* aarch64* arm*" # ring
+version=2.14.1
+revision=1
 build_style=cargo
 build_helper=qemu
+configure_args="--no-default-features --features=integrations"
 make_install_args="--path git-cliff"
 # These tests fail without a git repo
 make_check_args="-- --skip repo::"
-hostmakedepends="pkg-config"
-makedepends="libgit2-1.8-devel libzstd-devel"
+hostmakedepends="pkg-config libzstd-devel"
+makedepends="libgit2-1.9-devel libzstd-devel"
 short_desc="Changelog generator based on conventional commits"
 maintainer="tranzystorekk <tranzystorek.io@protonmail.com>"
-license="Apache-2.0, MIT"
+license="Apache-2.0 OR MIT"
 homepage="https://github.com/orhun/git-cliff"
 changelog="https://raw.githubusercontent.com/orhun/git-cliff/main/CHANGELOG.md"
 distfiles="https://github.com/orhun/git-cliff/archive/refs/tags/v${version}.tar.gz"
-checksum=d5791600e440d0842e42f3b0dbc8d503f4902920675054a23f046fbb1c252636
+checksum=22f01e016a02d674eb23afee3f0169a725352cc42d54549ecdb031e8f59e87e6
 
 post_install() {
 	vdoc README.md

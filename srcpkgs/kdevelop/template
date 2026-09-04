@@ -1,48 +1,77 @@
 # Template file for 'kdevelop'
+# group=kde-gear
 pkgname=kdevelop
-version=24.05.1
+version=26.08.0
 revision=1
+_llvmver=21
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF
- -DMEINPROC5_EXECUTABLE=/usr/bin/meinproc5"
-hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools qt5-tools
- kcmutils kcoreaddons kdevelop-pg-qt plasma-framework kwallet gettext tar which"
-makedepends="apr-util-devel llvm17-devel grantlee5-devel kcmutils-devel
- kdevelop-pg-qt clang-tools-extra
- kitemmodels-devel knewstuff-devel knotifyconfig-devel krunner-devel
- ktexteditor-devel libkomparediff2-devel okteta-devel
- purpose-devel qt5-location-devel qt5-webchannel-devel subversion-devel
- qt5-devel $(vopt_if webengine 'qt5-webengine-devel' 'qt5-webkit-devel')"
-# makedepends+=" libksysguard-devel"
+ -DClang_DIR=${XBPS_CROSS_BASE}/usr/lib/llvm/${_llvmver}/lib/cmake/clang
+ -DCMAKE_C_STANDARD=11" # Required for static_assert
+hostmakedepends="extra-cmake-modules qt6-base qt6-tools shared-mime-info
+ pkg-config clang-tools-extra${_llvmver} meson clazy kf6-kpackage
+ kdevelop-pg-qt gettext tar kf6-kdoctools kf6-kconfig kf6-kcmutils"
+makedepends="
+ qt6-base-devel
+ qt6-qt5compat-devel
+ qt6-declarative-devel
+ qt6-tools-devel
+ qt6-location-devel qt6-webchannel-devel qt6-webengine-devel
+ kf6-kconfig-devel
+ kf6-kiconthemes-devel
+ kf6-ki18n-devel
+ kf6-kitemmodels-devel
+ kf6-kitemviews-devel
+ kf6-kjobwidgets-devel
+ kf6-kcmutils-devel
+ kf6-kio-devel
+ kf6-knewstuff-devel
+ kf6-knotifyconfig-devel
+ kf6-kparts-devel
+ kf6-kservice-devel
+ kf6-ktexteditor-devel
+ kf6-threadweaver-devel
+ kf6-kxmlgui-devel
+ kf6-kwindowsystem-devel
+ kf6-kcrash-devel
+ kf6-kguiaddons-devel
+ kf6-karchive-devel
+ kf6-knotifications-devel
+ kf6-sonnet-devel
+ kf6-ktexttemplate-devel
+ kf6-ktextwidgets-devel
+ kf6-krunner-devel
+ kf6-kwidgetsaddons-devel
+ kf6-purpose-devel
+ libksysguard-devel
+ kf6-kpackage-devel
+ apr-util-devel subversion-devel
+ llvm${_llvmver}-devel clang${_llvmver}-devel
+ libkomparediff2-devel
+ astyle
+ libedit-devel libplasma-devel
+ boost-headers"
 # khelpcenter is required to display documentation
 depends="khelpcenter"
 short_desc="Integrated Development Environment for C/C++"
-maintainer="yopito <pierre.bourgin@free.fr>"
+maintainer="Orphaned <orphan@voidlinux.org>"
 license="GPL-2.0-or-later, LGPL-2.1-or-later"
 homepage="https://www.kdevelop.org/"
 changelog="https://kde.org/announcements/changelogs/gear/${version}/#kdevelop"
 distfiles="${KDE_SITE}/release-service/${version}/src/kdevelop-${version}.tar.xz"
-checksum=f6113f10242bb65662ddb76c7b725bb71e23bcdf19eb80e041f39d4d6c97f3b6
+checksum=e27779db83170b280381934eb276d2d1caed452284289e9371cd2b9c1fd1f29a
 
-build_options="webengine"
-desc_option_webengine="Use Qt5 WebEngine for documentation"
-
-if [ "$XBPS_TARGET_ENDIAN" = "le" ]; then
-	if [ "$XBPS_TARGET_WORDSIZE" = "$XBPS_WORDSIZE" ]; then
-		build_options_default="webengine"
-	fi
+if [ "$XBPS_WORDSIZE$XBPS_WORDSIZE" != "64$XBPS_TARGET_WORDSIZE" ]; then
+	broken="no qt6-webengine"
 fi
-case "$XBPS_TARGET_MACHINE" in
-	x86_64*|aarch64*)
-		makedepends+=" libomp-devel" ;;
-esac
 
 post_install() {
 	vdoc "${FILESDIR}/README.voidlinux"
 }
 
 kdevelop-devel_package() {
-	depends="kdevelop>=${version}_${revision}"
+	depends="kdevelop>=${version}_${revision} qt6-webengine-devel
+	 qt6-qt5compat-devel kf6-ktexteditor-devel kf6-threadweaver-devel"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include

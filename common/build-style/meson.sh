@@ -20,7 +20,7 @@ do_configure() {
 	export AR="gcc-ar"
 
 	# unbuffered output for continuous logging
-	PYTHONUNBUFFERED=1 ${meson_cmd} setup \
+	${meson_cmd} setup \
 		--prefix=/usr \
 		--libdir=/usr/lib${XBPS_TARGET_WORDSIZE} \
 		--libexecdir=/usr/libexec \
@@ -39,6 +39,7 @@ do_configure() {
 		--wrap-mode=nodownload \
 		-Db_lto=true -Db_ndebug=true \
 		-Db_staticpic=true \
+		-Dpkgconfig.relocatable=false \
 		${configure_args} . ${meson_builddir}
 }
 
@@ -47,15 +48,23 @@ do_build() {
 	: ${make_build_target:=all}
 	: ${meson_builddir:=build}
 
-	${make_cmd} -C ${meson_builddir} ${makejobs} ${make_build_args} ${make_build_target}
+	case "${make_cmd}" in
+	ninja|samu) : ${make_verbose:=-v} ;;
+	esac
+
+	${make_cmd} -C ${meson_builddir} ${XBPS_VERBOSE+${make_verbose}} ${makejobs} ${make_build_args} ${make_build_target}
 }
 
 do_check() {
-	: ${make_cmd:=ninja}
+	: ${make_cmd:=meson}
 	: ${make_check_target:=test}
 	: ${meson_builddir:=build}
 
-	${make_check_pre} ${make_cmd} -C ${meson_builddir} ${makejobs} ${make_check_args} ${make_check_target}
+	case "${make_cmd}" in
+	ninja|samu) : ${make_verbose:=-v} ;;
+	esac
+
+	${make_check_pre} ${make_cmd} ${make_check_target} ${XBPS_VERBOSE+${make_verbose}} -C ${meson_builddir} ${makejobs} ${make_check_args}
 }
 
 do_install() {
@@ -63,5 +72,9 @@ do_install() {
 	: ${make_install_target:=install}
 	: ${meson_builddir:=build}
 
-	DESTDIR=${DESTDIR} ${make_cmd} -C ${meson_builddir} ${make_install_args} ${make_install_target}
+	case "${make_cmd}" in
+	ninja|samu) : ${make_verbose:=-v} ;;
+	esac
+
+	DESTDIR=${DESTDIR} ${make_cmd} ${XBPS_VERBOSE+${make_verbose}} -C ${meson_builddir} ${make_install_args} ${make_install_target}
 }

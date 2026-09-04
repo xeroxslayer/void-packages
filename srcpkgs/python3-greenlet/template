@@ -1,6 +1,6 @@
 # Template file for 'python3-greenlet'
 pkgname=python3-greenlet
-version=3.0.3
+version=3.2.4
 revision=1
 build_style=python3-module
 hostmakedepends="python3-setuptools"
@@ -13,7 +13,7 @@ license="MIT"
 homepage="https://github.com/python-greenlet/greenlet"
 changelog="https://raw.githubusercontent.com/python-greenlet/greenlet/master/CHANGES.rst"
 distfiles="${PYPI_SITE}/g/greenlet/greenlet-${version}.tar.gz"
-checksum=43374442353259554ce33599da8b692d5aa96f8976d567d4badf263371fbe491
+checksum=0dca0d95ff849f9a364385f36ab49f50065d76964944638be9691e1832e9f86d
 
 do_check() {
 	python3 setup.py build_ext --inplace

@@ -1,20 +1,20 @@
 # Template file for 'libgedit-gtksourceview'
 pkgname=libgedit-gtksourceview
-version=299.2.1
+version=299.7.0
 revision=1
 build_helper="gir"
 build_style=meson
 configure_args="-Dgtk_doc=false"
 hostmakedepends="pkg-config glib-devel gettext"
-makedepends="gtk+3-devel libxml2-devel"
+makedepends="gtk+3-devel libxml2-devel libgedit-amtk-devel libgedit-gfls-devel"
 checkdepends="xvfb-run"
 short_desc="Source code editing widget"
-maintainer="Matt Boehlke <mtboehlke@gmail.com>"
+maintainer="Matt Boehlke <git@mtboehlke.com>"
 license="LGPL-2.1-or-later"
-homepage="https://gedit-technology.github.io"
-changelog="https://raw.githubusercontent.com/gedit-technology/libgedit-gtksourceview/main/NEWS"
-distfiles="https://github.com/gedit-technology/libgedit-gtksourceview/releases/download/${version}/libgedit-gtksourceview-${version}.tar.xz"
-checksum=f94ea579636d73b4a783b9ec43d77bc9a43d4b633b3bf9ba9d7a011cadb5cb92
+homepage="https://gitlab.gnome.org/World/gedit/libgedit-gtksourceview"
+changelog="https://gitlab.gnome.org/World/gedit/libgedit-gtksourceview/-/raw/main/NEWS"
+distfiles="https://gitlab.gnome.org/World/gedit/libgedit-gtksourceview/-/archive/${version}/libgedit-gtksourceview-${version}.tar.gz"
+checksum=c08a70666d5aad156a3fe9dd178ddd3bdf07b3733a1d37dccae0e366585e91f0
 make_check_pre="xvfb-run"
 
 libgedit-gtksourceview-devel_package() {

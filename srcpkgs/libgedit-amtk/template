@@ -1,19 +1,19 @@
 # Template file for 'libgedit-amtk'
 pkgname=libgedit-amtk
-version=5.8.0
-revision=2
+version=5.10.0
+revision=1
 build_helper="gir"
 build_style=meson
 configure_args="-Dgtk_doc=false"
 hostmakedepends="pkg-config glib-devel gettext"
 makedepends="gtk+3-devel"
 short_desc="Actions, Menus, and Toolbars Kit for GTK applications"
-maintainer="Matt Boehlke <mtboehlke@gmail.com>"
+maintainer="Matt Boehlke <git@mtboehlke.com>"
 license="LGPL-3.0-or-later"
-homepage="https://gedit-technology.net"
-changelog="https://raw.githubusercontent.com/gedit-technology/libgedit-amtk/main/NEWS"
-distfiles="https://gedit-technology.net/tarballs/libgedit-amtk/${pkgname}-${version}.tar.xz"
-checksum=64017ae100ef588e01ef54d79c13c4b9767fd37e4365d7e4afd924f751460ecc
+homepage="https://gitlab.gnome.org/World/gedit/libgedit-amtk"
+changelog="https://gitlab.gnome.org/World/gedit/libgedit-amtk/-/raw/main/NEWS"
+distfiles="https://gitlab.gnome.org/World/gedit/libgedit-amtk/-/archive/${version}/libgedit-amtk-${version}.tar.gz"
+checksum=6c884bf4c9716110930c17f0103d01e1fa2fa5c5b705803b0d4ddf72ba6094f4
 
 libgedit-amtk-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision} gtk+3-devel libglib-devel"

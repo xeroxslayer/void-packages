@@ -1,10 +1,10 @@
 # Template file for 'cargo-bootstrap'
 pkgname=cargo-bootstrap
-version=1.80.1
+version=1.98.0
 revision=1
 short_desc="Bootstrap binaries of Rust package manager"
 maintainer="Orphaned <orphan@voidlinux.org>"
-license="MIT, Apache-2.0"
+license="Apache-2.0 OR MIT"
 homepage="https://www.rust-lang.org/"
 conflicts="cargo>=0"
 lib32disabled=yes
@@ -14,25 +14,33 @@ repository=bootstrap
 _bootstrap_url="https://static.rust-lang.org/dist"
 
 case "$XBPS_TARGET_MACHINE" in
-	x86_64*|i686) ;;
+	x86_64*|i686|aarch64*) ;;
 	# See srcpkgs/rust-bootstrap/files/generating-distfiles.md for details
 	*) _bootstrap_url="https://repo-default.voidlinux.org/distfiles" ;;
 esac
 
 # hardcode platform triplets
-# because this info isn't avaialble here without hacky workarounds
+# because this info isn't available here without hacky workarounds
 case "$XBPS_TARGET_MACHINE" in
 	i686)
 		distfiles="${_bootstrap_url}/cargo-${version}-i686-unknown-linux-gnu.tar.xz"
-		checksum="b0f6d95c8a292b1276f30b1bca14197b28297c2fcd51974ef320d05497be3ca3"
+		checksum="b768fe07ae4bd233e5c3f864f935620abb8b72139f7369c869e964a0c30ae419"
 		;;
 	x86_64)
 		distfiles="${_bootstrap_url}/cargo-${version}-x86_64-unknown-linux-gnu.tar.xz"
-		checksum="da9340b3249f08656cd4fe10e47aa292c7cd79903870a5863064731a00b5b27e"
+		checksum="2f512d170d3dd23e16ababcda32ee2e6d5172d861a7af1f504e0b1e270cafab9"
 		;;
 	x86_64-musl)
 		distfiles="${_bootstrap_url}/cargo-${version}-x86_64-unknown-linux-musl.tar.xz"
-		checksum="0abddee763bf4f5561e883102a09d35237f5f503027c0e78fbf2a201c95a37ce"
+		checksum="8a4da98a9a099e2bf8c210a236cd0cc8d6a259254f4b8fdf6997177ea9e1e4bf"
+		;;
+	aarch64)
+		distfiles="${_bootstrap_url}/cargo-${version}-aarch64-unknown-linux-gnu.tar.xz"
+		checksum="5784379d73ac881d15a9e67eed2882cd58c747c276221c23cdf9aff37e015ff6"
+		;;
+	aarch64-musl)
+		distfiles="${_bootstrap_url}/cargo-${version}-aarch64-unknown-linux-musl.tar.xz"
+		checksum="0d4ad14495f631df4d680b1ee970b69ec10f7249d939e85aadc313e04450219f"
 		;;
 	# placeholders for user-supplied distfiles
 	ppc64le)

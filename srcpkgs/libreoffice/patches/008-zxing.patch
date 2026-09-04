@@ -5,7 +5,7 @@ Description: we should always check for full path
  Perhap we should changes the file hierarchy of zxing-cpp project instead?
 --- a/configure.ac
 +++ b/configure.ac
-@@ -11292,35 +11292,16 @@ else
+@@ -12167,35 +12167,16 @@ else
          SYSTEM_ZXING=TRUE
          ZXING_CFLAGS=
          AC_LANG_PUSH([C++])
@@ -46,7 +46,7 @@ Description: we should always check for full path
          FilterLibs "${ZXING_LIBS}"
          ZXING_LIBS="${filteredlibs}"
      else
-@@ -11337,8 +11318,8 @@ else
+@@ -12212,8 +12193,8 @@ else
      save_CXXFLAGS=$CXXFLAGS
      CXXFLAGS="$CXXFLAGS $CXXFLAGS_CXX11 $ZXING_CFLAGS"
      AC_COMPILE_IFELSE([AC_LANG_SOURCE([
@@ -59,10 +59,27 @@ Description: we should always check for full path
                  matrix.set(0, 0, true);
 --- a/cui/source/dialogs/QrCodeGenDialog.cxx
 +++ b/cui/source/dialogs/QrCodeGenDialog.cxx
-@@ -26,22 +26,22 @@
- #pragma GCC diagnostic ignored "-Wshadow"
+@@ -22,10 +22,10 @@
+ #include <vcl/weld/MessageDialog.hxx>
+ 
+ #if ENABLE_ZXING
+-#if __has_include(<Version.h>)
+-#include <Version.h>
++#if __has_include(<ZXing/Version.h>)
++#include <ZXing/Version.h>
+ #else
+-#include <ZXVersion.h>
++#include <ZXing/ZXVersion.h>
  #endif
  
+ #ifdef __GNUC__
+@@ -34,22 +34,22 @@
+ #endif
+ 
+ #if ZXING_VERSION_MAJOR >= 3
+-#include <ZXingCpp.h>
++#include <ZXing/ZXingCpp.h>
+ #else
 -#include <BarcodeFormat.h>
 -#include <BitMatrix.h>
 -#include <MultiFormatWriter.h>
@@ -79,13 +96,9 @@ Description: we should always check for full path
 +#include <ZXing/BitMatrixIO.h>
  #endif
  
--#if __has_include(<Utf.h>)
--#include <Utf.h>
-+#if __has_include(<ZXing/Utf.h>)
-+#include <ZXing/Utf.h>
- #else
+ #if ZXING_VERSION_MAJOR < 2
 -#include <TextUtfEncoding.h>
 +#include <ZXing/TextUtfEncoding.h>
  #endif
+ #endif // ZXING_VERSION_MAJOR >= 3
  
- #endif // ENABLE_ZXING

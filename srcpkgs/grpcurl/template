@@ -1,6 +1,6 @@
 # Template file for 'grpcurl'
 pkgname=grpcurl
-version=1.9.1
+version=1.9.4
 revision=1
 build_style=go
 go_import_path="github.com/fullstorydev/grpcurl"
@@ -11,7 +11,7 @@ maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="MIT"
 homepage="https://github.com/fullstorydev/grpcurl"
 distfiles="https://github.com/fullstorydev/grpcurl/archive/refs/tags/v${version}.tar.gz"
-checksum=4bc60a920635929bdf9fa9bb5d310fe3f82bccd441a1487680566694400e4304
+checksum=bea899ba2f483a951bf40aa05d41e069dd2f7bfe52d2a229717abfdb5620cb7c
 
 post_install() {
 	vlicense LICENSE

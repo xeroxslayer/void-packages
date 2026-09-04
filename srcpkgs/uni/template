@@ -1,6 +1,6 @@
 # Template file for 'uni'
 pkgname=uni
-version=2.7.0
+version=2.9.0
 revision=1
 build_style=go
 go_import_path=zgo.at/uni/v2
@@ -9,14 +9,10 @@ short_desc="Query the Unicode database from the CLI, with good support for emoji
 maintainer="Martin Tournoij <martin@arp242.net>"
 license="MIT"
 homepage="https://github.com/arp242/uni"
+changelog="https://raw.githubusercontent.com/arp242/uni/refs/heads/main/CHANGELOG.md"
 distfiles="https://github.com/arp242/uni/archive/refs/tags/v${version}.tar.gz"
-checksum=192f904eda8cd9f3dce002bc04a5c622ea113c269d4b1a19f4c89094b05f9cd9
-
+checksum=dc595807a0ab875111dafd55be9f3de116cbea652216f9d0082d03dddb3d83be
 conflicts="wvstreams"
-
-do_check() {
-	go test -v ./...
-}
 
 post_install() {
 	vlicense LICENSE

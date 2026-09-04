@@ -1,6 +1,6 @@
 # Template file for 'rpcbind'
 pkgname=rpcbind
-version=1.2.6
+version=1.2.9
 revision=1
 build_style=gnu-configure
 configure_args="--enable-warmstarts --with-statedir=/run --with-rpcuser=rpc
@@ -12,7 +12,7 @@ maintainer="Orphaned <orphan@voidlinux.org>"
 license="BSD-3-Clause"
 homepage="https://rpcbind.sourceforge.net"
 distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}-${version}.tar.bz2"
-checksum=5613746489cae5ae23a443bb85c05a11741a5f12c8f55d2bb5e83b9defeee8de
+checksum=ce5f1a87c566ef0b2897a28f50a75c1dc23fec413a46a7f4183423b6b6aa991b
 system_accounts="rpc"
 
 post_install() {

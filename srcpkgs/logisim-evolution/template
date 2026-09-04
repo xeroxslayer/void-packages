@@ -1,16 +1,16 @@
 # Template file for 'logisim-evolution'
 pkgname=logisim-evolution
-version=3.8.0
+version=4.1.0
 revision=1
-hostmakedepends="openjdk17 gradle"
-depends="openjdk17-jre"
+hostmakedepends="openjdk21 gradle"
+depends="openjdk21-jre"
 short_desc="Digital logic design tool and simulator"
 maintainer="voidbert <humbertogilgomes@protonmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/logisim-evolution/logisim-evolution"
 changelog="https://github.com/logisim-evolution/logisim-evolution/raw/master/CHANGES.md"
 distfiles="https://github.com/logisim-evolution/logisim-evolution/archive/refs/tags/v${version}.tar.gz"
-checksum=7a49558a490a0df886b3ea488f12e4ea887a2ec8c278872dca39b2bebfaed3ee
+checksum=1e659781d19492b7d8c0710e5802f827ed1acf33cedf77a7cb605a42d4e5560c
 
 do_build() {
 	. /etc/profile.d/jdk.sh

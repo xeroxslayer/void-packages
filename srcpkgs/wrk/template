@@ -1,13 +1,13 @@
 # Template file for 'wrk'
 pkgname=wrk
 version=4.2.0
-revision=2
+revision=3
 build_style=gnu-makefile
 make_build_args="VER=${version} WITH_OPENSSL=/usr WITH_LUAJIT=/usr"
 hostmakedepends="LuaJIT"
 makedepends="LuaJIT-devel openssl-devel"
 short_desc="Modern HTTP benchmarking tool"
-maintainer="Noel Cower <ncower@nil.dev>"
+maintainer="Orphaned <orphan@voidlinux.org>"
 license="Apache-2.0"
 homepage="https://github.com/wg/wrk"
 distfiles="https://github.com/wg/wrk/archive/${version}.tar.gz"

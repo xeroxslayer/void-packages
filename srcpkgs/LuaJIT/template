@@ -1,20 +1,17 @@
 # Template file for 'LuaJIT'
 pkgname=LuaJIT
 # the minor version is the contents of the .relver file in the source tarball
-version=2.1.1720049189
+version=2.1.1785192264
 revision=1
-_commit_hash=04dca7911ea255f37be799c18d74c305b921c1a6
+_commit=faaf663340347a78b22ed94c63c24fe090bd9784
 build_style=gnu-makefile
 hostmakedepends="lua52-BitOp"
 short_desc="Just-In-Time Compiler for Lua"
 maintainer="Daniel Martinez <danielmartinez@cock.li>"
 license="MIT"
-homepage="http://www.luajit.org"
-distfiles="https://repo.or.cz/luajit-2.0.git/snapshot/${_commit_hash}.tar.gz"
-checksum=5374d56b57929a3bb020518fd5468470465a6e08a3eb86d7b38fe7106a56ab26
-
-build_options="lua52compat"
-desc_option_lua52compat="higher compatibility with lua 5.2"
+homepage="https://www.luajit.org"
+distfiles="https://github.com/LuaJIT/LuaJIT/archive/${_commit}.tar.gz"
+checksum=d8d51b50a6b6046848be6632aef06305b4d9326a79e9ddd4f2e0705f1fc3f750
 
 _host_cc="cc"
 if [ -n "$CROSS_BUILD" ]; then
@@ -31,9 +28,7 @@ if [ -n "$CROSS_BUILD" ]; then
 fi
 
 pre_build() {
-	if [ "$build_option_lua52compat" ]; then
-		make_build_args+=" XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT"
-	fi
+	make_build_args+=" XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT"
 }
 
 do_build() {

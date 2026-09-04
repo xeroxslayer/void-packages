@@ -1,24 +1,20 @@
 # Template file for 'delta'
 pkgname=delta
-version=0.17.0
-revision=3
+version=0.19.2
+revision=1
 build_style=cargo
 build_helper=qemu
 # https://github.com/dandavison/delta/issues/1637
 make_check_args="-- --test-threads=1"
 hostmakedepends="pkg-config"
-makedepends="libgit2-devel oniguruma-devel"
+makedepends="libgit2-1.9-devel oniguruma-devel"
 checkdepends="git"
 short_desc="Syntax-highlighting pager for git"
 maintainer="Andrew Benson <abenson+void@gmail.com>"
 license="MIT"
 homepage="https://github.com/dandavison/delta"
 distfiles="https://github.com/dandavison/delta/archive/refs/tags/${version}.tar.gz"
-checksum=1abd21587bcc1f2ef0cd342784ce990da9978bc345578e45506419e0952de714
-
-post_patch() {
-    cargo update --package time --precise 0.3.35
-}
+checksum=f59b86f8c8dda4d76a3ba34b8553777a20c3b461646917d8e480fac6531bba9f
 
 post_install() {
 	vlicense LICENSE

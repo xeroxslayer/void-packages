@@ -1,45 +1,39 @@
 # Template file for 'fwupd'
 pkgname=fwupd
-version=1.9.22
+version=2.1.7
 revision=1
 build_style=meson
 build_helper="gir qemu"
-configure_args="-Dsupported_build=enabled -Dconsolekit=disabled
- -Dsystemd=disabled -Delogind=enabled -Dintrospection=enabled
- -Defi_binary=false"
+configure_args="-Dsupported_build=enabled -Dsystemd=disabled
+ -Dintrospection=enabled -Defi_binary=false"
 hostmakedepends="dejavu-fonts-ttf gnutls-tools pkg-config gcab gi-docgen vala
  glib-devel polkit gettext pango python3-gobject python3-Pillow
  protobuf-c-devel"
 makedepends="libxmlb-devel cairo-devel colord-devel libarchive-devel
- gnutls-devel gpgme-devel json-glib-devel libgusb-devel polkit-devel
- sqlite-devel gcab-devel pango-devel elogind-devel
- tpm2-tss-devel libjcat-devel libcurl-devel protobuf-c-devel"
+ gnutls-devel gpgme-devel json-glib-devel polkit-devel sqlite-devel gcab-devel
+ pango-devel elogind-devel flashrom-devel tpm2-tss-devel libjcat-devel
+ libcurl-devel protobuf-c-devel pciutils-devel gi-docgen"
 depends="dbus udisks2"
 checkdepends="umockdev"
 conf_files="
  /etc/fwupd/*.conf
  /etc/fwupd/remotes.d/*.conf"
 short_desc="Daemon to allow session software to update firmware"
-maintainer="dataCobra <datacobra@thinkbot.de>"
+maintainer="Anachron <gith@cron.world>"
 license="LGPL-2.1-or-later"
 homepage="https://github.com/fwupd/fwupd"
 changelog="https://github.com/fwupd/fwupd/releases"
 distfiles="https://github.com/fwupd/fwupd/archive/${version}.tar.gz"
-checksum=c4889516fac3d840e755315e8351c1e91d663df55e22633adf2cd5de0f260ea9
+checksum=338ea5b139f9a37447ff2215d0a8d2cf23851fb5a39fba7b1b0ded52a40240cc
 replaces="fwupdate>=0"
 
 case "$XBPS_TARGET_MACHINE" in
 	x86_64*|i686*)
 		_have_uefi=yes
-		_plugin_msr=yes
 		;;
 	arm*|aarch64*)
 		_have_uefi=yes;;
 esac
-
-if [ -z "$_plugin_msr" ]; then
-	configure_args+=" -Dplugin_msr=disabled"
-fi
 
 if [ -n "$_have_uefi" ]; then
 	makedepends+=" libefivar-devel fwupd-efi"
@@ -54,6 +48,10 @@ pre_build() {
 		export XDG_DATA_DIRS=/usr/$XBPS_CROSS_TRIPLET/usr/share/
 	fi
 }
+
+if [ -n "$CROSS_BUILD" ]; then
+	configure_args+=" -Dvendor_ids_dir=${XBPS_CROSS_BASE}/usr/share/hwdata/"
+fi
 
 post_install() {
 	vcompletion data/bash-completion/fwupdmgr bash fwupdmgr

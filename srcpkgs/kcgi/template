@@ -1,6 +1,6 @@
 # Template file for 'kcgi'
 pkgname=kcgi
-version=0.13.3
+version=1.0.1
 revision=1
 build_style=configure
 configure_args="PREFIX=/usr MANDIR=/usr/share/man SBINDIR=/usr/bin"
@@ -15,7 +15,7 @@ license="ISC"
 homepage="http://kristaps.bsd.lv/kcgi/"
 changelog="https://kristaps.bsd.lv/kcgi/archive.html"
 distfiles="http://kristaps.bsd.lv/kcgi/snapshots/kcgi-${version}.tgz"
-checksum=1c13538e21511086a6ba1a87f40543de257fc3d8871840b17626c16d714d2f5a
+checksum=bc1cc29bca48eace5df4ba0f1aa1dfc2fe7ac773f750d4af84d80c52cece3c45
 
 export CFLAGS="-DENABLE_SECCOMP_FILTER=1"
 

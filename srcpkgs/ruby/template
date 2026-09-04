@@ -1,22 +1,22 @@
 # Template file for 'ruby'
-_ruby_abiver=3.3.0
+_ruby_abiver=3.4.0
 
 pkgname=ruby
-version=3.3.4
+version=3.4.10
 revision=1
 build_style=gnu-configure
-configure_args="--enable-shared --disable-rpath
+configure_args="--enable-shared --disable-rpath --enable-pie
  PKG_CONFIG=/usr/bin/pkg-config"
 make_build_args="all capi"
-hostmakedepends="pkg-config bison groff"
-makedepends="zlib-devel readline-devel libffi-devel openssl-devel
- gdbm-devel libyaml-devel pango-devel"
+hostmakedepends="bison cargo groff pkg-config"
+makedepends="gdbm-devel libffi-devel libyaml-devel openssl-devel pango-devel
+ readline-devel zlib-devel"
 short_desc="Ruby programming language"
-homepage="http://www.ruby-lang.org/en/"
+homepage="https://www.ruby-lang.org/en/"
 maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="Ruby, BSD-2-Clause"
 distfiles="https://cache.ruby-lang.org/pub/ruby/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=1caaee9a5a6befef54bab67da68ace8d985e4fb59cd17ce23c28d9ab04f4ddad
+checksum=6f32ad662baafc228d12030dbcd284f83b034dd4337b300dc84ac74d11a1eb68
 
 if [ "$XBPS_TARGET_LIBC" = "glibc" ]; then
 	makedepends+=" libxcrypt-devel"
@@ -64,17 +64,6 @@ pre_configure() {
 		ppc*)
 			# Random segfaults otherwise
 			export CFLAGS+=" -Os"
-			;;
-	esac
-}
-
-pre_build() {
-	# Set -fno-stack-protector for i686* or otherwise linking fails with
-	# ...: undefined reference to '__stack_chk_fail_local'
-	case "$XBPS_TARGET_MACHINE" in
-		i686*) sed -i Makefile \
-				-e "s;-fstack-protector-strong;;" \
-				-e "s;-fstack-protector;-fno-stack-protector;"
 			;;
 	esac
 }

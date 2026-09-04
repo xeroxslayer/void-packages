@@ -1,7 +1,8 @@
 # Template file for 'kf6-kdbusaddons'
+# group=kde-frameworks
 pkgname=kf6-kdbusaddons
-version=6.3.0
-revision=2
+version=6.29.0
+revision=1
 build_style=cmake
 hostmakedepends="extra-cmake-modules qt6-tools qt6-base "
 makedepends="qt6-base-private-devel"
@@ -11,11 +12,15 @@ maintainer="John <me@johnnynator.dev>"
 license="LGPL-2.1-or-later"
 homepage="https://invent.kde.org/frameworks/kdbusaddons"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/${pkgname#kf6-}-${version}.tar.xz"
-checksum=7e2d8999ef09513aaa42000acb5369b203cd5977308f6e7891cde6a8d4422002
+checksum=a3d2de669bfad5de3f86cc8c6448a02f7567e4ad04aa6099ccfaa2df5f07e8f8
 make_check_pre="dbus-run-session"
 
+# stage builds
+makedepends+=" kf6-base"
+shlib_requires="KDE_Frameworks.${version%.*}"
+
 kf6-kdbusaddons-devel_package() {
-	depends="${makedepends//private-} ${sourcepkg}>=${version}_${revision}"
+	depends="qt6-base-devel ${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include

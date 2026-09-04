@@ -1,27 +1,33 @@
 # Template file for 'ccache'
 pkgname=ccache
-version=4.8.3
+version=4.14
 revision=1
 build_style=cmake
 configure_args="-DENABLE_TESTING=OFF -DREDIS_STORAGE_BACKEND=OFF
- -DENABLE_DOCUMENTATION=OFF"
-makedepends="libzstd-devel"
+ -DENABLE_DOCUMENTATION=OFF -DDEPS=LOCAL"
+makedepends="libzstd-devel xxHash-devel doctest-devel"
 short_desc="Fast C/C++ Compiler Cache"
 maintainer="Enno Boland <gottox@voidlinux.org>"
 license="GPL-3.0-or-later"
 homepage="https://ccache.dev"
 changelog="https://ccache.dev/releasenotes.html"
 distfiles="https://github.com/ccache/ccache/releases/download/v${version}/ccache-${version}.tar.xz
- https://github.com/ccache/ccache/releases/download/v${version}/ccache-${version}-linux-x86_64.tar.xz"
-checksum="e47374c810b248cfca3665ee1d86c7c763ffd68d9944bc422d9c1872611f2b11
- 1021f6dc9641447524cc7bceb72f807f2d6502df118d69dc3f0f86cacf048e79"
+ https://github.com/ccache/ccache/releases/download/v${version}/ccache-${version}-linux-x86_64-glibc.tar.xz"
+checksum="b093ac5d38204cb4d9f29b0bbd570675aa5a592a78e6675b2c506dbe045234e7
+ 45a91165db7092e67c6208ada03f54700e684c4cd3735f9031de95669ed9272c"
+
 
 if [ -n "$XBPS_CHECK_PKGS" ]; then
+	makedepends+=" perl"
 	configure_args+=" -DENABLE_TESTING=ON"
 fi
 
 post_extract() {
 	mv ccache-${version}/* .
+}
+
+pre_check() {
+	export CC=/usr/bin/gcc
 }
 
 post_install() {
@@ -48,5 +54,5 @@ post_install() {
 		done
 	done
 	# pregenerated manpage to avoid bringing ruby into the build
-	vman ccache-${version}-linux-x86_64/ccache.1
+	vman ccache-${version}-linux-x86_64-glibc/ccache.1
 }

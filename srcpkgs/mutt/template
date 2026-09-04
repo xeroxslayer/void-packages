@@ -1,7 +1,7 @@
 # Template file for 'mutt'
 pkgname=mutt
-version=2.2.13
-revision=2
+version=2.4.2
+revision=1
 build_style=gnu-configure
 configure_args="--enable-pop --enable-imap --enable-smtp --enable-hcache
  --enable-gpgme --with-idn2 --with-ssl --without-sasl --with-gsasl
@@ -9,7 +9,7 @@ configure_args="--enable-pop --enable-imap --enable-smtp --enable-hcache
  --with-gpgme-prefix=${XBPS_CROSS_BASE}/usr --sysconfdir=/etc/$pkgname
  --with-gdbm=${XBPS_CROSS_BASE}/usr"
 conf_files="/etc/${pkgname}/Muttrc"
-hostmakedepends="perl pkg-config gettext w3m"
+hostmakedepends="perl pkgconf gettext w3m"
 makedepends="gdbm-devel gpgme-devel libidn2-devel openssl-devel gsasl-devel
  ncurses-devel zlib-devel sqlite-devel libunistring-devel libgpg-error-devel"
 depends="mime-types"
@@ -19,7 +19,8 @@ license="GPL-2.0-or-later"
 homepage="http://www.mutt.org"
 changelog="http://mutt.org/relnotes/${version%.*}"
 distfiles="http://ftp.mutt.org/pub/mutt/${pkgname}-${version}.tar.gz"
-checksum=eb23faddc1cc97d867693f3a4a9f30949ad93765ad5b6fdae2797a4001c58efb
+checksum=2703ff1a51a99c3163d4fd998ac22e982bbd5493d512a7c5bde716a8adba0394
+make_check=no # no meaningful tests
 
 post_install() {
 	# provided by mime-types

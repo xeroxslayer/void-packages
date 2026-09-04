@@ -1,6 +1,6 @@
 # Template file for 'bctoolbox'
 pkgname=bctoolbox
-version=5.3.74
+version=5.3.106
 revision=1
 build_style=cmake
 configure_args="-DENABLE_TESTS=ON -DENABLE_TESTS_COMPONENT=FALSE
@@ -12,7 +12,7 @@ maintainer="John <me@johnnynator.dev>"
 license="GPL-2.0-only"
 homepage="https://gitlab.linphone.org/BC/public/bctoolbox"
 distfiles="https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/${version}/bctoolbox-${version}.tar.gz"
-checksum=1249d795f6013dd69791768dacb5c14620dca1707dc5faf290ed062cffc2027c
+checksum=d5cbef92dd5089260d60e4064e0068693e0d71908818c2f50ed7319de9c8f988
 
 bctoolbox-devel_package() {
 	depends="bctoolbox-${version}_${revision}"

@@ -1,6 +1,6 @@
 # Template file for 'lxqt-menu-data'
 pkgname=lxqt-menu-data
-version=2.0.0
+version=2.4.0
 revision=1
 build_style=cmake
 hostmakedepends="pkg-config qt6-base qt6-tools lxqt-build-tools perl"
@@ -10,7 +10,7 @@ maintainer="Helmut Pozimski <helmut@pozimski.eu>"
 license="LGPL-2.1-or-later"
 homepage="https://lxqt-project.org"
 distfiles="https://github.com/lxqt/lxqt-menu-data/releases/download/${version}/${pkgname}-${version}.tar.xz"
-checksum=44768dd5dcc7c66fadd919ddd8528e22dd7ee587ef198b02dffbf05e0c0d1a52
+checksum=3487e47562dc19e63358a50c81e51cd0cf1a020397943cadd8db35daeb4866cc
 
 lxqt-menu-data-devel_package() {
 	short_desc+=" - development files"

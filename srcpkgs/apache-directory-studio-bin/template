@@ -7,7 +7,7 @@ _version="${version/+/-}"
 archs="x86_64"
 depends="virtual?java-runtime gtk+3 desktop-file-utils"
 short_desc="LDAP browser and directory client"
-maintainer="Frank Steinborn <steinex@nognu.de>"
+maintainer="Orphaned <orphan@voidlinux.org>"
 license="Apache-2.0"
 homepage="https://directory.apache.org/studio/"
 distfiles="https://dlcdn.apache.org/directory/studio/${_version}/${_pkgname}-${_version}-linux.gtk.x86_64.tar.gz
@@ -17,6 +17,7 @@ checksum="24764eff94ad3a257a899d34f9933276af0d201fba9017d6737558b2ffd5eda7
 python_version=3
 nopie=yes
 skip_extraction="${_pkgname}-${_version}-src.zip"
+replaces="apache-directory-studio>=0"
 
 post_extract() {
 	bsdtar --strip-components 3 -xf "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_pkgname}-${_version}-src.zip" \
@@ -40,6 +41,6 @@ do_install() {
 
 apache-directory-studio_package() {
 	depends="${sourcepkg}>=${version}_${revision}"
-	build_style=meta
+	metapackage=yes
 	short_desc+=" (transitional dummy package)"
 }

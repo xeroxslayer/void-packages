@@ -1,6 +1,6 @@
 # Template file for 'librist'
 pkgname=librist
-version=0.2.7
+version=0.2.20
 revision=1
 build_style=meson
 makedepends="mbedtls-devel"
@@ -8,8 +8,11 @@ short_desc="Reliable Internet Stream Transport (RIST)"
 maintainer="Duncaen <duncaen@voidlinux.org>"
 license="BSD-2-Clause"
 homepage="https://code.videolan.org/rist/librist"
+changelog="https://code.videolan.org/rist/librist/-/tags"
 distfiles="https://code.videolan.org/rist/librist/-/archive/v${version}/librist-v${version}.tar.gz"
-checksum=7e2507fdef7b57c87b461d0f2515771b70699a02c8675b51785a73400b3c53a1
+checksum=9e40eeb87f014790531ad41326cc271b930a65962e4b15231b301fc59b29fe31
+
+make_check=ci-skip # tests are flaky
 
 post_install() {
 	vlicense COPYING

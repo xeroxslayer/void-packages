@@ -1,7 +1,7 @@
 # Template file for 'libraw'
 pkgname=libraw
-version=0.21.2
-revision=1
+version=0.21.4
+revision=2
 build_style=gnu-configure
 hostmakedepends="pkg-config automake libtool"
 makedepends="jasper-devel lcms2-devel libgomp-devel"
@@ -11,7 +11,7 @@ license="LGPL-2.1-only, CDDL-1.0"
 homepage="https://www.libraw.org"
 changelog="https://github.com/LibRaw/LibRaw/raw/${version%.*}-stable/Changelog.txt"
 distfiles="https://www.libraw.org/data/LibRaw-${version}.tar.gz"
-checksum=fe7288013206854baf6e4417d0fb63ba4ed7227bf36fff021992671c2dd34b03
+checksum=6be43f19397e43214ff56aab056bf3ff4925ca14012ce5a1538a172406a09e63
 
 pre_configure() {
 	autoreconf -fi

@@ -1,6 +1,6 @@
 # Template file for 'texlab'
 pkgname=texlab
-version=5.19.0
+version=5.25.1
 revision=1
 build_style=cargo
 make_install_args="--path crates/texlab"
@@ -11,7 +11,7 @@ license="GPL-3.0-or-later"
 homepage="https://texlab.netlify.app/"
 changelog="https://raw.githubusercontent.com/latex-lsp/texlab/master/CHANGELOG.md"
 distfiles="https://github.com/latex-lsp/texlab/archive/refs/tags/v${version}.tar.gz"
-checksum=ad72171dd267fd73ecc6a05f9ff3cc068e77a3b82f986305ab455aeade841294
+checksum=7d8435761b0012b6de1cfdb4db37f5eafcba8e670530ef1df44aa9934eef0887
 
 if [ "$XBPS_TARGET_ENDIAN" = "be" -a "$XBPS_TARGET_WORDSIZE" = "32" ]; then
 	broken="smartstring fails to compile"

@@ -1,6 +1,6 @@
 # Template file for 'xaos'
 pkgname=xaos
-version=4.3.2
+version=4.3.7
 revision=1
 build_style=qmake
 hostmakedepends="qt6-base qt6-tools"
@@ -10,4 +10,4 @@ maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-2.0-or-later"
 homepage="https://xaos-project.github.io/"
 distfiles="https://github.com/xaos-project/XaoS/archive/release-${version}.tar.gz"
-checksum=1fc08f282ffb6decb7aeadc344d47be77871f9734dc8f57cc13df857291d74ec
+checksum=71f5dc47843ba383f59faec1cfec35919f45c0e465ba3d5744317fcfcb96b16f

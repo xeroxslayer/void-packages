@@ -1,15 +1,16 @@
 # Template file for 'python3-zipstream-ng'
 pkgname=python3-zipstream-ng
-version=1.7.1
+version=1.9.2
 revision=1
-build_style=python3-module
-hostmakedepends="python3-setuptools"
+build_style=python3-pep517
+hostmakedepends="hatchling"
 depends="python3"
 checkdepends="python3-pytest"
 short_desc="Modern and easy to use streamable zip file generator"
 maintainer="chrysos349 <chrysostom349@gmail.com>"
 license="LGPL-3.0-only"
 homepage="https://github.com/pR0Ps/zipstream-ng"
-distfiles="${PYPI_SITE}/z/zipstream-ng/zipstream-ng-${version}.tar.gz"
-checksum=f92023b9ca578cd7fdd94ec733c65664ecf7ee32493e38cdf8e365a1316e9ffc
+changelog="https://raw.githubusercontent.com/pR0Ps/zipstream-ng/refs/heads/master/CHANGELOG.md"
+distfiles="${PYPI_SITE}/z/zipstream_ng/zipstream_ng-${version}.tar.gz"
+checksum=116b7304b00f3251328cb300fa90f0f09d523b7faf2a06b3eaf7277dcb82cc3e
 conflicts="python3-zipstream"
